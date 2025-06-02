@@ -15,9 +15,9 @@ async def password_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -
     try:
         password = generate_password()
         await update.message.reply_text(
-            f"🔐 Ось ваш випадковий пароль:\n\n`{password}`",
+            f"Ось ваш випадковий пароль:\n\n`{password}`",
             parse_mode="Markdown"
         )
     except Exception as e:
-        await update.message.reply_text("⚠️ Виникла помилка при генерації пароля.")
+        await update.message.reply_text("Виникла помилка при генерації пароля.")
         print(f"[ERROR /password]: {e}")
