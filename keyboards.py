@@ -1,28 +1,36 @@
 from telegram import ReplyKeyboardMarkup, KeyboardButton
 
-# 🔹 Головне меню
+# Головне меню
 def get_main_keyboard():
     keyboard = [
-        [KeyboardButton("/calc")],
-        [KeyboardButton("/learnword")],
-        [KeyboardButton("/help")]
+        [KeyboardButton("/calc"), KeyboardButton("/translate")],
+        [KeyboardButton("/password"), KeyboardButton("/remind")],
+        [KeyboardButton("/quote"), KeyboardButton("/advice")],
+        [KeyboardButton("/learnword")]
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
-# 🔹 Меню для /learnword
+# Підменю з кнопками "Ще раз" і "Назад"
+def get_navigation_keyboard():
+    keyboard = [
+        [KeyboardButton("Назад"),
+        KeyboardButton("Ще раз")]
+    ]
+    return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
+
+# Меню для /learnword
 def get_learnword_keyboard():
     keyboard = [
-        [KeyboardButton("Нове слово"),
-         KeyboardButton("Перевірити знання")],
+        [KeyboardButton("Нове слово"), KeyboardButton("Перевірити знання")],
         [KeyboardButton("Назад")]
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
-# 🔹 Інше підменю (можна розширити, для цього потрібно скопіювати функцію і змінити назву функції та кнопок)
-def get_example_submenu():
+# Меню для /remind
+def get_remind_keyboard():
     keyboard = [
-        [KeyboardButton("Опція 1"),
-         KeyboardButton("Опція 2")],
+        [KeyboardButton("Додати нагадування"), KeyboardButton("Мої нагадування")],
+        [KeyboardButton("Очистити всі")],
         [KeyboardButton("Назад")]
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
