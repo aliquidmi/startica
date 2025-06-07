@@ -25,7 +25,7 @@ async def send_random_word(update: Update, context: ContextTypes.DEFAULT_TYPE):
             words = json.load(f)
 
         if not words:
-            await update.message.reply_text("️ Список слів порожній.")
+            await update.message.reply_text("⚠️ Список слів порожній.")
             return
 
         word_pair = random.choice(words)
@@ -33,22 +33,22 @@ async def send_random_word(update: Update, context: ContextTypes.DEFAULT_TYPE):
         translation = word_pair.get("translation")
 
         if not word or not translation:
-            await update.message.reply_text("️ Неправильний формат слова.")
+            await update.message.reply_text("⚠️ Неправильний формат слова.")
             return
 
-        message = f" {word} /  {translation}"
+        message = f"📖 {word} / 🔷 {translation}"
         await update.message.reply_text(message, reply_markup=get_learnword_keyboard())
 
     except FileNotFoundError:
-        await update.message.reply_text(" Файл words.json не знайдено.")
+        await update.message.reply_text("❌ Файл words.json не знайдено.")
     except json.JSONDecodeError:
-        await update.message.reply_text(" Помилка у форматі JSON.")
+        await update.message.reply_text("❌ Помилка у форматі JSON.")
     except Exception as e:
-        await update.message.reply_text(f" Помилка: {str(e)}")
+        await update.message.reply_text(f"⚠️ Помилка: {str(e)}")
 
 async def learn_word_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
-        " Вивчай нові слова або перевір свої знання!",
+        "📚 Вивчай нові слова або перевір свої знання!",
         reply_markup=get_learnword_keyboard()
     )
 
@@ -58,11 +58,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text == "Нове слово":
         await send_random_word(update, context)
     elif text == "Назад":
-        await update.message.reply_text(" Повернення в головне меню", reply_markup=get_main_keyboard())
+        await update.message.reply_text("⬅️ Повернення в головне меню", reply_markup=get_main_keyboard())
     elif text == "Перевірити знання":
-        await update.message.reply_text(" Ця функція ще в розробці.")  # За бажанням
+        await update.message.reply_text("🔍 Ця функція ще в розробці.")  # За бажанням
     else:
-        await update.message.reply_text(" Обери дію з меню.")
+        await update.message.reply_text("🤖 Обери дію з меню.")
 
 def get_handler():
     return [
