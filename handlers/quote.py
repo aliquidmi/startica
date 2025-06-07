@@ -1,7 +1,10 @@
-from telegram import Update
+from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import ContextTypes
 import random
 import logging
+from keyboards import get_navigation_keyboard, get_main_keyboard
+
+# Ініціалізуємо лог
 logger = logging.getLogger(name)
 
 # Локальний список цитат
@@ -29,17 +32,34 @@ QUOTES = [
     "Роби те, що любиш — і ти ніколи не працюватимеш. — Конфуцій"
 ]
 
+
 # Обробник /quote
 async def quote_handler(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     try:
-        if not QUOTES:
-            await update.message.reply_text("⚠️ Список цитат порожній.")
-            logger.warning("Запит /quote, але список цитат порожній.")
-            return
+        text = update.message.text
 
-        quote = random.choice(QUOTES)
-        await update.message.reply_text(f'💡 "{quote}"')
-        logger.info("Надіслано випадкову цитату користувачу.")
+        if text == "/quote" or text == "Ще раз":
+            if not QUOTES:
+                await update.message.reply_text("⚠️ Список цитат порожній.")
+                logger.warning("Запит /quote, але список цитат порожній.")
+                return
+
+            quote = random.choice(QUOTES)
+            keyboard = get_navigation_keyboard()
+            await update.message.reply_text(f'💡 "{quote}"', reply_markup=keyboard)
+            logger.info("Надіслано випадкову цитату користувачу.")
+
+        elif text == "Назад":
+            keyboard = get_main_keyboard()
+            await update.message.reply_text("Повернулись у головне меню.", reply_markup=keyboard)
+            logger.info(f"Користувач повернувся у головне меню.")
+
+        else:
+            await update.message.reply_text(
+                "Введи /quote або натисни кнопку.",
+                reply_markup=get_navigation_keyboard()
+            )
+            logger.warning(f"Користувач надіслав невідому команду: {text}")
 
     except Exception as e:
         logger.error(f"Помилка в quote_handler: {e}")
