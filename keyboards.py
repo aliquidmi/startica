@@ -3,14 +3,14 @@ from telegram import ReplyKeyboardMarkup, KeyboardButton
 # Головне меню
 def get_main_keyboard():
     keyboard = [
-        [KeyboardButton("/calc"), KeyboardButton("/translate")],
-        [KeyboardButton("/password"), KeyboardButton("/remind")],
-        [KeyboardButton("/quote"), KeyboardButton("/advice")],
-        [KeyboardButton("/learnword")]
+        [KeyboardButton("🧮 Калькулятор"), KeyboardButton("🌍 Перекладач")],
+        [KeyboardButton("🔐 Генератор паролів"), KeyboardButton("📆 Нагадування")],
+        [KeyboardButton("😄 Цитата"), KeyboardButton("💡 Порада")],
+        [KeyboardButton("📚 Вивчення слів")]
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
-# Підменю з кнопками "Ще раз" і "Назад"
+# "Ще раз" / "Назад" (скопійюте для свого коду)
 def get_navigation_keyboard():
     keyboard = [
         [KeyboardButton("Назад"),
@@ -18,7 +18,7 @@ def get_navigation_keyboard():
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
-# Меню для /learnword
+# /learnword
 def get_learnword_keyboard():
     keyboard = [
         [KeyboardButton("Нове слово"), KeyboardButton("Перевірити знання")],
@@ -26,7 +26,7 @@ def get_learnword_keyboard():
     ]
     return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
 
-# Меню для /remind
+# /remind
 def get_remind_keyboard():
     keyboard = [
         [KeyboardButton("Додати нагадування"), KeyboardButton("Мої нагадування")],

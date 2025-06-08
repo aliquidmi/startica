@@ -1,73 +1,64 @@
-import logging
+import logging, asyncio, sys, nest_asyncio
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 from telegram import Update
+import quote, learnword, remind, advice, calc, translate, password
 from config import BOT_TOKEN
-
-# Імпортуємо обробники
-from handlers import calc, translate, password, quote, remind, advice, learnword
 from keyboards import get_main_keyboard
 
-# Налаштування логування
 logging.basicConfig(
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     level=logging.INFO
 )
 logger = logging.getLogger(__name__)
 
-# /start
 async def start_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logger.info("Користувач викликав /start")
     keyboard = get_main_keyboard()
     await update.message.reply_text(
-        "Привіт! Обери команду з меню:",
+        "🌿 Привіт! Обери команду з меню:",
         reply_markup=keyboard
     )
 
-# Глобальний обробник помилок
 async def error_handler(update: object, context: ContextTypes.DEFAULT_TYPE):
     logger.error("Виникла помилка: %s", context.error)
     if isinstance(update, Update) and update.message:
         await update.message.reply_text("Виникла неочікувана помилка. Спробуй пізніше.")
 
-# Запуск бота
-def main():
+async def main():
     logger.info("Запуск бота...")
 
     app = ApplicationBuilder().token(BOT_TOKEN).build()
 
-    # Додаємо обробники команд
     app.add_handler(CommandHandler("start", start_command))
-    logger.info("Додано обробник /start")
-
     app.add_handler(calc.get_handler())
-    logger.info("Додано обробник /calc")
-
-    app.add_handler(translate.get_handler())
-    logger.info("Додано обробник /translate")
-
     app.add_handler(password.get_handler())
-    logger.info("Додано обробник /password")
 
-    app.add_handler(remind.get_handler())
-    logger.info("Додано обробник /remind")
+    for handler in remind.get_handler():
+        app.add_handler(handler)
 
-    app.add_handler(quote.get_handler())
-    logger.info("Додано обробник /quote")
+    for handler in quote.get_handler():
+        app.add_handler(handler)
 
-    app.add_handler(advice.get_handler())
-    logger.info("Додано обробник /advice")
+    for handler in advice.get_handler():
+        app.add_handler(handler)
 
-    app.add_handler(learnword.get_handler())
-    logger.info("Додано обробник /learnword")
+    for handler in translate.get_handler():
+        app.add_handler(handler)
 
-    # Обробка помилок
+    for handler in learnword.get_handler():
+        app.add_handler(handler)
+
     app.add_error_handler(error_handler)
-    logger.info("Додано глобальний обробник помилок")
 
-    print("Бот запущено")
-    logger.info("Бот запущено")
+    remind.start_scheduler()
 
-    app.run_polling()
+    await app.run_polling()
+
 
 if __name__ == "__main__":
-    main()
+    if sys.platform.startswith('win') and sys.version_info >= (3, 8):
+        asyncio.set_event_loop_policy(asyncio.WindowsSelectorEventLoopPolicy())
+
+    nest_asyncio.apply()
+
+    asyncio.run(main())
