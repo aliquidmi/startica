@@ -1,6 +1,6 @@
 import re
 import pytest
-from handlers.password import generate_password, password_handler
+from password import generate_password, password_handler
 from unittest.mock import AsyncMock, MagicMock
 
 # ---------- TEST 1: generate_password ----------
