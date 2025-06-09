@@ -3,7 +3,7 @@ from telegram import Update, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import CommandHandler, ContextTypes, MessageHandler, filters
 from keyboards import get_main_keyboard
 
-logger = logging.getLogger(name)
+logger = logging.getLogger(__name__)
 
 REPEAT_QUOTE_TEXT = "Ще цитата"
 
