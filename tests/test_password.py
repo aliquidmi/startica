@@ -1,7 +1,11 @@
 import re
 import pytest
-from password import generate_password, password_handler
+import sys
+import os
 from unittest.mock import AsyncMock, MagicMock
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from handlers.password import generate_password, password_handler
 
 # ---------- TEST 1: generate_password ----------
 
@@ -19,18 +23,21 @@ def test_generate_password_characters():
 
 @pytest.mark.asyncio
 async def test_password_handler_response():
-    # Создаём mock update.message.reply_text
     mock_update = MagicMock()
+    mock_update.message = MagicMock()
     mock_update.message.reply_text = AsyncMock()
+
+    # Мокаем .text.strip() корректно
+    mock_text = MagicMock()
+    mock_text.strip.return_value = "/password"
+    mock_update.message.text = mock_text
 
     mock_context = MagicMock()
 
     await password_handler(mock_update, mock_context)
 
-    # Проверяем, что reply_text был вызван
     assert mock_update.message.reply_text.call_count == 1
 
-    # Проверяем, что ответ содержит пароль в `` (markdown)
     args, kwargs = mock_update.message.reply_text.call_args
     assert "ваш випадковий пароль" in args[0].lower()
-    assert re.search(r"`(.+)`", args[0])  # пароль в `` Markdown
+    assert re.search(r"`(.+)`", args[0])
