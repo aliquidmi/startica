@@ -13,7 +13,7 @@ WAITING_FORMULA = 1
 
 def get_calc_keyboard():
     return ReplyKeyboardMarkup(
-        [[KeyboardButton("Ще раз"), KeyboardButton("Назад")]],
+        [[KeyboardButton("Назад"), KeyboardButton("Ще раз")]],
         resize_keyboard=True
     )
 
