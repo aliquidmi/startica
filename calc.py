@@ -50,11 +50,10 @@ async def calc_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Введіть математичний вираз для обчислення.\n\n"
             "<b>Підтримувані операції:</b>\n"
             "• Основні: +, -, *, /, ( )\n"
-            "• Функції: sqrt, sin, cos, tan, log, ln, exp, pow, abs\n"
+            "• Функції: sqrt, sin, cos, tan, log, ln, exp, abs\n"
             "• Константи: pi, e\n\n"
             "<b>Приклади:</b>\n"
             "• <code>2 + 2 * 3</code>\n"
-            "• <code>sqrt(16) + pow(2, 3)</code>\n"
             "• <code>sin(pi/2) * cos(0)</code>",
             parse_mode='HTML', reply_markup=get_calc_keyboard()
         )
